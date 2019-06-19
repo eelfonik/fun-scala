@@ -11,6 +11,7 @@ object intsets {
 abstract class IntSet {
   def include(x: Int): IntSet
   def contains(x: Int): Boolean
+  def union(other: IntSet): IntSet
 }
 
 // class Empty extends IntSet {
@@ -30,6 +31,8 @@ object Empty extends IntSet {
   def contains(x:Int): Boolean = false
   // and the include method of an empty set will add the x & 2 empty node
   def include(x:Int): IntSet = new NonEmpty(x, Empty, Empty)
+
+  def union(other: IntSet) = other
   
   override def toString = "."
 }
@@ -56,6 +59,11 @@ class NonEmpty(value: Int, left: IntSet, right: IntSet) extends IntSet {
     if (x < value) new NonEmpty(value, left include x, right)
     else if (x > value) new NonEmpty(value, left, right include x)
     else this
+
+  // this recursion terminate because every call to union is at least one element less than the current set
+  // so eventually we'll arrive at the empty set
+  def union(other: IntSet): IntSet =
+    ((left union right) union other) include value
 
   override def toString = "<" + left + value + right + ">"
 }
