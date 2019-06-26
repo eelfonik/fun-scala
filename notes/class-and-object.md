@@ -166,7 +166,7 @@ class C extends A with B {
 ```
 
 ## all things as object
-- any **primitive type** can be presented as object with classes: [see the implementation of Boolean & Nat](src/main/scala/week4/Primitive.scala)
+- any **primitive type** can be presented as object with classes: [see the implementation of Boolean & Nat](../src/main/scala/week4/Primitive.scala)
 - and **functions** are objects with `apply` method:
 
   - **function definition**

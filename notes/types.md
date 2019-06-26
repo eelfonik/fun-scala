@@ -1,9 +1,9 @@
 
-![class-hierarchy](assets/type-diagram.png)
+![class-hierarchy](../assets/type-diagram.png)
 
 ## Top types
 
-![top-types](assets/top-type.png)
+![top-types](../assets/top-type.png)
 
 - 要不就属于**Primitive types** (包括 Unit), 继承自`AnyVal`, 
 - 要不就属于**reference types** (including user-defined classes)，继承自`AnyRef`. `AnyRef`里包含了很多scala collection的东西，`List`, `Array`等等，继承于至少**两个superclasses**: `java.lang.String`, 以及`scala.ScalaObject` 
@@ -147,7 +147,7 @@ Based on that, we can have the **rules of variance check** (aka how to think lik
 - *nonvariant* type params (`[T]`) can appear *anywhere*
 
 #### It's sometimes a bit harder to make a class covariant
-see the [List implementation](src/main/scala/week4/NonPrimitive.scala), if we want to add an `prepend` method inside trait List, (namely `def prepend(elem: T): List[T] = new Cons(elem, this)`) we run into the same problem as the `update` in mutable data type: the covariant type param appears in method param, so it violates the variance check rules above.
+see the [List implementation](../src/main/scala/week4/NonPrimitive.scala), if we want to add an `prepend` method inside trait List, (namely `def prepend(elem: T): List[T] = new Cons(elem, this)`) we run into the same problem as the `update` in mutable data type: the covariant type param appears in method param, so it violates the variance check rules above.
 
 But the variance check rules are invented to prevent *mutable operations* in covariant classes, and here we are not mutating anything because we return a new `Cons` 💩. 
 
