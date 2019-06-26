@@ -113,8 +113,6 @@ class Empty extends IntSet {
 - you can also redefine a implemented method in the superclass, using `override` in the subclass
 
 
-
-
 ## Traits
  
 Add functionality to a class, it could contain *abstract* (not implemented) or *concrete* (implemented) method
@@ -167,8 +165,67 @@ class C extends A with B {
 }
 ```
 
+## all things as object
+- any **primitive type** can be presented as object with classes: [see the implementation of Boolean & Nat](src/main/scala/week4/Primitive.scala)
+- and **functions** are objects with `apply` method:
+
+  - **function definition**
+  
+    inside standard Scala package, we actually see things like:
+
+    ```scala
+    package scala
+
+    trait Function1[A, B] {
+      def apply(x: A): B
+    }
+    // and Function2, Function3.... goes up to function that takes 22 parameters 😂
+    ```
+  - **anonymous function**:
+
+    an anonymous function `(x: Int) => x * x` is expanded as following:
+
+    ```scala
+    {
+      class AnonClass extends Function1[Int, Int] {
+        def apply(x: Int) = x * x
+      }
+      new AnonClass
+    }
+
+    // or shorter as anonymous class syntax
+    new Function1[Int, Int] {
+      def apply(x:Int) = x * x
+    }
+    ```
+
+    > Q: in the **anonymous class syntax**, we directly instantiate a `trait` ?
+
+  - **function call**
+
+    a function call is expanded as following:
+
+    ```scala
+    // f(7)
+
+    val f = new Function1[Int, Int] {
+      def apply(x:Int) = x * x
+    }
+
+    f.apply(7)
+
+    ```
+
+- **Methods are not object**, like `def f(x: Int): Int`, but if it's called in a place where a *Function type* is expected, it was *automatically coverted* to function type by using anonymous function: `(x:Int) => f(x)`. This is sometimes called **eta-expansion**.
+
+
+
+
+## final class
+
 
 ## 总结：
 这一部分非常的object oriented, 特别是从一个abstract class or trait extends出来的各种class, 被称之为**dynamic method dispatch**, 即一个method被call的时候，取决于包含了这个method的object的*runtime type*.
 
 > Q: **Dynamic method dispatch** 跟functional programming里使用的**higher order function**非常相似，所以这两者能否互相代替？以及跟多态polymorphism有啥差别？
+

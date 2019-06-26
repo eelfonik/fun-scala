@@ -28,7 +28,7 @@ class Cons[T](val head: T, val tail: List[T]) extends List[T] {
 
 class Nil[T] extends List[T] {
   def isEmpty = true
-  // because Nothing is a subtype of any type inherits from Object, so it belongs perfectly to the type T
+  // because "Nothing" is a subtype of any type inherits from Object, so it belongs perfectly to the type T
   def head: Nothing = throw new NoSuchElementException("Nil.head")
   def tail: Nothing = throw new NoSuchElementException("Nil.tail")
 }
