@@ -12,26 +12,6 @@
 - `Nothing` -> `Nothing` is the type of like `throw new SomeException`
 - `Null` -> `Null` is the the **subtype of all** objects, and is the type of value `null`
 
-## 确定一个value的type
-
-我们可以使用 `isInstanceOf` 来确定一个东西的type.
-
-比如定义了一个method greet2:
-
-```scala
-def greet2(name: String) : String = “goodbye “ + name
-
-greet2.isInstanceOf[AnyRef]
-res10: Boolean = true
-
-greet2.isInstanceOf[Object]
-res11: Boolean = true
-
-// 注意此处 scala.AnyRef 就是 java.lang.Object, 所以第二个判断也返回为true
-```
-
-> But the author said NEVER use `isInstanceOf` or `asInstanceOf` ???
-
 ## Type erasure:
 As type doesn't affect program evaluation, it's only useful on compile time, lots of languages including Scala will have **type erasure** for the runtime
 

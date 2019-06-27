@@ -64,7 +64,7 @@ object Nlist{
 case class Nlist(el: Int)
 ```
 
-`case class`免除了我们override `toString`这个default method的必要，也不用再定义一个companion object来定义一个默认的apply method，同时还有如下优点：(注意以下的`==` , `!=`, `equals`, `toString`, `hashCode` 都是定义在scala的`Any`这个最顶层的*superclass*里的)
+`case class`免除了我们override `toString`这个default method的必要，也不用再定义一个companion object来定义一个默认的`apply` method，同时还有如下优点：(注意以下的`==` , `!=`, `equals`, `toString`, `hashCode` 都是定义在scala的`Any`这个最顶层的*superclass*里的)
 1. override了某些标准库里的`hashCode`这个default method =>这个method能用来干嘛？？？
 2. override `equals` method, so we can have two object with same set value equal, EX: `new Nlist(1) == new Nlist(1) returns true`
 3. 自动定义了`unapply` method，因此我们可以对这个class使用 **pattern match**

@@ -1,1 +1,81 @@
-## decomposition
+## Decomposition
+
+A pratical problem: find a general and convient way to access objects in a extensible class hierarchy.
+
+Example [here](../src/main/scala/week4/).
+
+### Hacky solution: type tests and type casts
+
+- 我们可以使用 `isInstanceOf` 来确定一个东西的type. (**type tests**)
+
+比如定义了一个method greet2:
+
+```scala
+def greet2(name: String) : String = “goodbye “ + name
+
+greet2.isInstanceOf[AnyRef]
+res10: Boolean = true
+
+greet2.isInstanceOf[Object]
+res11: Boolean = true
+
+// 注意此处 scala.AnyRef 就是 java.lang.Object, 所以第二个判断也返回为true
+```
+
+- 然后也可以使用`asInstanceOf`来强制指定一个type (**type casts**)
+
+```scala
+greet2.asInstanceOf[Object]
+// treat greets as an instance of "Object"
+```
+
+Those 2 are very low level and is discouraged in Scala, we have better alternatives.
+
+### OO style of decomposition
+
+```scala
+trait Base {
+  def eval: Int
+}
+
+class Number(n: Int) extends Base {
+  def eval: Int = n
+}
+
+class Sum(e1: Base, e2: Base) extends Base {
+  def eval: Int = e1.eval + e2.eval
+}
+
+class Prod(e1: Base, e2: Base) extends Base {
+  def eval: Int = e1.eval * e2.eval
+}
+```
+
+The disavantage is
+- if we want to add another method to the classes, we need to touch the `trait` and all subclasses that extends it.
+- if we want to have some simplification like `a * b + a * c = a * (b + c)`, it involves 2 classes `Prod` & `Sum`, so we cannot do it in a single object without reference to another object.
+
+### Pattern matching
+
+If we look at the decomposition, all we want to do ( the test (`is`) and accesor (`as`) method for example ) is to **reverse** the construction process:
+- **Which** subclass was used ?
+- **What** were the arguments used in constructor ?
+
+Scala use `case class` to adress this problem, see detailed notes [about case class](class-and-object.md#case-class), and the usage as [ADT](types.md#ADT).
+
+In general, **pattern matching** is like `switch` statement is other languages, but instead of only be able to case test *primary values* (like `string`, `number`), it's expanded to *class hierarchy level*.
+
+
+## DI dependency injection
+
+
+大致是: 不要在每个controller里都用new来重复initialize某个service class, 要不然整个application里就会有很多个该class的instance
+
+Existential type:
+
+```scala
+// when you define a list and don’t care about the type of list elements
+def printContents(list: List[_]): Unit = list.foreach(println(_))
+```
+
+
