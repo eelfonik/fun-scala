@@ -86,7 +86,7 @@ res0: Any = hello 1
 > Q: 跟trait有啥差别？
 > A: 不能一口气继承很多个啊哈哈哈
 
-- Abstract class can contain members *without* implementation :
+- Abstract class can contain members *without* implementation, 有点类似interface的意思，但**可以包含**concrete methods/members:
 
 ```scala
 abstract class IntSet {
@@ -120,8 +120,8 @@ Add functionality to a class, it could contain *abstract* (not implemented) or *
 > Q: 这东西跟abstract object有什么区别？？
 
 > A:
-> - 更多是interface的意思，但可以包含concrete methods/members, 如下面的trait `A`
-> - 另外trait不能有parameters
+> - trait不能有parameters
+> - 可以直接`new`一个`trait`
 > - A trait is a kind of class that enables multiple inheritance. 
 
 ```scala

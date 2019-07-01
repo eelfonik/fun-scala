@@ -51,19 +51,72 @@ class Prod(e1: Base, e2: Base) extends Base {
 }
 ```
 
+If in the program you need mostly creating new *subclasses*, it's a perfect fine solution. Unless you need to frequently add new `methods`: 
+
 The disavantage is
 - if we want to add another method to the classes, we need to touch the `trait` and all subclasses that extends it.
 - if we want to have some simplification like `a * b + a * c = a * (b + c)`, it involves 2 classes `Prod` & `Sum`, so we cannot do it in a single object without reference to another object.
 
 ### Pattern matching
 
-If we look at the decomposition, all we want to do ( the test (`is`) and accesor (`as`) method for example ) is to **reverse** the construction process:
-- **Which** subclass was used ?
-- **What** were the arguments used in constructor ?
+If we look at the decomposition, all we want to do ( the *test* (`is`) and *accesor* (`as`) method for example ) is to **reverse** the construction process:
+- **Which** subclass was used ? -> *test*
+- **What** were the arguments used in constructor ? -> *accessor*
 
-Scala use `case class` to adress this problem, see detailed notes [about case class](class-and-object.md#case-class), and the usage as [ADT](types.md#ADT).
+Scala use `case class` to adress this problem, see detailed notes about [case class](class-and-object.md#case-class), and the usage as [ADT](types.md#ADT).
 
 In general, **pattern matching** is like `switch` statement is other languages, but instead of only be able to case test *primary values* (like `string`, `number`), it's expanded to *class hierarchy level*.
+
+#### Some syntactical decision for pattern matching
+- to distinguish a **variable** `n` which can match *anything*, with a **constant** `N` can only match *one value*, syntactically the first letter of variables must be lower case, and upper case for constant
+- cannot use the *same variable name* in matching
+
+#### Evaluation of a pattern matching
+Assume we have a pattern matching like following:
+
+```scala
+def eval(e: Expr): Int = e match {
+  case Number(n) => n
+  case Sum(e1, e2) => eval(e1) + eval(e2)
+}
+
+eval(Sum(Number(1), Number(2)))
+```
+
+1. replace the param by the value
+
+```scala
+Sum(Number(1), Number(2)) match {
+  case Number(n) => n
+  case Sum(e1, e2) => eval(e1) + eval(e2)
+}
+```
+
+2. evaluation the match expression
+
+```scala
+// bound `Number(1)` to variable `e1`
+// and `Number(2)` to varaible `e2`
+eval(Number(1)) + eval(Number(2))
+```
+
+3. repeat for the `Number`
+
+```scala
+Number(1) match {
+  case Number(n) => n
+  case Sum(e1, e2) => eval(e1) + eval(e2)
+} + eval(Number(2))
+
+// becomes
+1 + eval(Number(2))
+
+// Then
+1 + 2
+
+// finally
+3
+```
 
 
 ## DI dependency injection

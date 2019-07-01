@@ -101,7 +101,7 @@ def y = square(2)
 
 完整的collection => https://www.scala-lang.org/api/current/scala/index.html
 
-- **Immutable collection**:
+### **Immutable collection**
 
 例如`List`, `Array`
 
@@ -111,8 +111,10 @@ def y = square(2)
 
   ```scala
   val list: List[Int] = List(1,2,3)
+
   list :+ 4 
   res10: List[Int] = List(1,2,3,4)
+
   list.:+(5)
   res11: List[Int] = List(1,2,3,5)
   ```
@@ -126,7 +128,39 @@ list(1)
 res: Int = 2
 ```
 
-- **Mutable collection**:
+#### More on `List`
+
+as it's important building block for many data.
+
+- At basic, `List` **is** a sequence, and it's a recursive tree structure, while `Array` is flat.
+
+- create a list:
+
+  ```scala
+  List(x1, ..., xn)
+  ```
+
+- `List` is *homogeneous*: it can contain only the **same type** of elements
+
+- `List` is constructed by
+  - the empty list `Nil`
+  - and a constructor `cons`, or `::`, so that `x :: xs` means getting a new List with first element (`head`) as `x`, combined with the elements in another List `xs` (`tail`). 
+
+    **N.B.**
+    - think a List with only one element `el` is actually `el :: Nil`
+    - the operators end with `:` are **right associative**, while all other operators are left associative. And those right associative operators are treat as the *method call* of its **right operand** : So `1 :: 2 :: Nil` is the same as `Nil.::2.::1` -> see the `prepend` operation we defined [here](../src/main/scala/week4/NonPrimitive.scala).
+
+- pattern match for `List` decomposition
+
+  ```scala
+  List(x)
+  x :: Nil // a list with the first element as x
+
+  List(x :: xs) // a list A of a list B, where the list B consistents of a first element `x`, and a tail
+  ```
+
+
+### **Mutable collection**
 
 例如`ListBuffer`
  
