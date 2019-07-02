@@ -1,4 +1,4 @@
-## keywords:
+## keywords
 ### `val`
 define a constant (or value)
 
@@ -95,7 +95,7 @@ def y = square(2)
 // y refers to expression square(2)
 ```
 
-## Collections:
+## Collections
 
 基本上就是一堆类似`list`,`array`之类的东西，分成两大类，**immutable & mutable**
 
@@ -140,7 +140,7 @@ as it's important building block for many data.
   List(x1, ..., xn)
   ```
 
-- `List` is *homogeneous*: it can contain only the **same type** of elements
+- `List` is *homogeneous*: it can contain only the **same type** of elements (but that *type* can be `Any`, the ultimate top class, so you can still put anything if you want... 😹)
 
 - `List` is constructed by
   - the empty list `Nil`
@@ -159,6 +159,29 @@ as it's important building block for many data.
   List(x :: xs) // a list A of a list B, where the list B consistents of a first element `x`, and a tail
   ```
 
+- Some common methods for `List`
+
+  A complete doc is [here](https://www.scala-lang.org/api/2.13.0/scala/collection/immutable/List.html)
+
+  Basic methods:
+
+  - `xs.length`
+  - `xs.last`, `xs.init`: reversed version of `xs.head`, `xs.tail`
+  - `xs take n`, `xs drop n` : get the first `n` elements of a list, or take out the first `n` elements from a list
+  - `xs ++ ys` or `xs concate ys` or `xs ::: ys`
+  - `xs.reverse`
+  - `xs updated (n,x)`: update a list at index `n`
+
+  HOF methods:
+
+  - `xs filter (x => x > 0)`
+  - `xs filterNot (x => x > 0)`
+  - `xs partition (x => x > 0)`
+
+
+  - `xs takewhile (x => x > 0)`
+  - `xs dropwhile (x => x > 0)`
+  - `xs span (x => x > 0)`
 
 ### **Mutable collection**
 
@@ -174,9 +197,21 @@ listBuffer.toList
 res: List[Int] = List(1,2)
 ```
 
-## Functions:
+## Pairs & Tuples
 
-Function定义的时候可以传入默认参数，例如
+Some buildin method returns `pair`, for example the `splitAt` method for List, it returs a pair of 2 sublists. 
+
+2 ways to access members of pair:
+- `val (label, value) = pair`
+- `val label = pair._1 val value = pair._2`
+
+`pair` is just a special case of `tuple`. 
+
+## Functions
+
+### parameters
+
+#### Default param
 
 ```scala
 def sayBye(name: String = "kino") = "bye, " + name
@@ -187,38 +222,71 @@ sayBye("hh")
 res: String = bye, hh
 ```
 
-或者更进一步，我们可以使用`implicit`这个词，然后在没有传入参数的时候，scala会自动在**current scope**里寻找定义为implicit，并且type为String的值，然后使用它 (如果current scope里有超过一个以上的值符合条件，你会收到一个error: `ambiguous implicit values`)
+#### Implicit param
+或者更进一步，我们可以使用`implicit`这个词，然后在没有传入参数的时候，scala会自动在**current scope**里寻找定义为implicit，并且type为String的值，然后使用它。不要滥用，个人更倾向于使用`explicit`.
 
-```scala
-def bye2(implicit name: String) : String = "bye, " + name
+- 这一点在recursive called methods里非常有用，可以简化不少写法
 
-bye2
-error: could not find implicit value for parameter name: String
+  ```scala
+  import math.Ordering
 
-implicit val whatever: String = "k"
-bye2
-res: String = bye, k
-```
+  // explicit
+  def mergeSort[T](xs: List[T])(order: Ordering[T]): List[T] = {
+    ...
+    if (Ordering.lt(headA, headB)) xxx
+    ...
+    merge(mergeSort(left)(order), mergeSort(right)(order))
+  }
+
+  mergeSort(nums)(Ordering.Int)
+  mergeSort(names)(Ordering.String)
+
+  // implicit
+  def mergeSort[T](xs: List[T])(implicit order: Ordering): List[T] = {
+    ...
+    if (Ordering.lt(headA, headB)) xxx
+    ...
+
+    // here the omitted param `order` is the same as the implicit `order` param of mergeSort function
+    merge(mergeSort(left), mergeSort(right))
+  }
+
+  mergeSort(nums)
+  mergeSort(names)
+
+  ```
+- 如果current scope里有超过一个以上的值符合条件，你会收到一个error: `ambiguous implicit values`
+
+  ```scala
+  def bye2(implicit name: String) : String = "bye, " + name
+
+  bye2
+  error: could not find implicit value for parameter name: String
+
+  implicit val whatever: String = "k"
+  bye2
+  res: String = bye, k
+  ```
 
 
-implicit的值也可以import进来，不过如果是一个*class with companion object*, scala也会在这个companion object里寻找implicit的值，例如：
+- implicit的值也可以import进来，不过如果是一个*class with companion object*, scala也会在这个companion object里寻找implicit的值，例如：
 
-```scala
-class Bye[T](val name: T) {
-    override def toString = "Bye(" + name + ")"
-}
-object Bye {
-    implicit val bye: Bye[String] = new Bye("kino")
-}
+  ```scala
+  class Bye[T](val name: T) {
+      override def toString = "Bye(" + name + ")"
+  }
+  object Bye {
+      implicit val bye: Bye[String] = new Bye("kino")
+  }
 
-def bye(implicit bye: Bye[String]): String = "hello " + bye.name
+  def bye(implicit bye: Bye[String]): String = "hello " + bye.name
 
-bye
+  bye
 
-res: String = hello kino
-```
+  res: String = hello kino
+  ```
 
-Multiple ways to define a function: 
+### Multiple ways to define a function 
 
 - 可以用`def`, 或者`val` (基本上就跟js里的 function / const keyword差不多）
 比如之前的这个例子：

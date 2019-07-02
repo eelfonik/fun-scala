@@ -118,6 +118,28 @@ Number(1) match {
 3
 ```
 
+#### Match anything
+Pattern matching can match values, types, regex, so it's very powerful.
+
+```scala
+someVal match {
+  // if someVal is Nil
+  case Nil => throw new Error("patternMatch: things went wrong")
+  // if someVal is a List of Any type (this is type matching)
+  case list: List[Any] => flatten(list)
+  // if someVal equals to string "text" (this is a value mathing)
+  case n == "text" => n
+  // for all other cases, just return someVal
+  case _ => someVal
+}
+```
+
+One thing to keep in mind is pattern matching is **sequential** : once it had a fulfilled case, it will not keep looking for all the following cases, so be carefull with the **order** of possible *overlapping* case clauses.
+
+## Higher order function
+- partical application ??
+- closure ??
+
 
 ## DI dependency injection
 

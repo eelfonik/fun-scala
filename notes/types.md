@@ -9,8 +9,8 @@
 - 要不就属于**reference types** (including user-defined classes)，继承自`AnyRef`. `AnyRef`里包含了很多scala collection的东西，`List`, `Array`等等，继承于至少**两个superclasses**: `java.lang.String`, 以及`scala.ScalaObject` 
 
 ## Bottom Type:
-- `Nothing` -> `Nothing` is the type of like `throw new SomeException`
-- `Null` -> `Null` is the the **subtype of all** objects, and is the type of value `null`
+- `Nothing` -> `Nothing` is the **subtype of all things**, for example `throw new SomeException`
+- `Null` -> `Null` is the **subtype of all objects** , and is the type of value `null`
 
 ## Type erasure:
 As type doesn't affect program evaluation, it's only useful on compile time, lots of languages including Scala will have **type erasure** for the runtime
@@ -27,7 +27,21 @@ As type doesn't affect program evaluation, it's only useful on compile time, lot
 
 历史上来说，**subtyping**是OO先应用的，而**generics**是fp先应用的
 
-### Interaction between those 2 forms:
+### Type parameterize (generics type)
+
+著名的泛型(generics type)
+
+Sometimes we need a function(or class/method) to handle different param types with different behaviours, we can do that by *paramaterize* that function with *comparison function*.
+
+Check the `mergeSort` implementation [here](../src/main/scala/week5/List.scala)
+
+Scala also have a buildin class `scala.math.Ordering[T]` for ordering for different types, which contains methods like `lt`.
+
+Note the usage of those parameters can be rather `implicit` than `explicit`: see [here](basic.md#functions)
+
+
+### Interaction between *subtyping* & *generics*:
+
 - **bounds**
 
   Notations:
@@ -47,7 +61,7 @@ As type doesn't affect program evaluation, it's only useful on compile time, lot
   List[NonEmpty] <: List[IntSet]
   ```
 
-  We call those *types* **covariant**, 即这一类types之间的subtyping relationship，是会随着type parameter的变化而varies的。（此处这个covariant是`List`)
+  We call those *types*(like `List` here) **covariant**, 即这一类types之间的subtyping relationship，是会随着type parameter的变化而正向varies的(thus the name ***co**variant* )
 
   A problem with *covariant* is the **Liskov substitution principle**, which says if `A <: B`, then anything you can do with element belongs to type `B`, should be able to be applied with an element belongs to type `A`.
   
@@ -150,6 +164,7 @@ trait List[+T] {
 > Because the element to be prepended is not the same type as the `List[NonEmpty]`, so we parameterize the type of `prepend` method to be the **smallest** superset `U` that contains both `NonEmpty` and the prepended element (`Empty` in our case), so the `U` will be `IntSet`, so finally we got back a `List[IntSet]`. 
 
 > And this way, we can safely substitute the usage of `List[IntSet]` by `List[NonEmpty]`, even when we prepend a `Empty` element -- as it automatically turns the `List[NonEmpty]` to `List[IntSet]` if necessary.
+
 
 ## ADT
 
