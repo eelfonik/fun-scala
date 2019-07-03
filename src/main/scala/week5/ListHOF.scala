@@ -37,4 +37,25 @@ object listHof {
 
   encode(List("a", "a", "a", "b", "c", "c", "a"))
   // List(("a", 3), ("b", 1), ("c", 2), ("a", 1))
+
+  def reduceLeft[T](xs: List[T])(op: (T, T) => T): T = xs match {
+    case Nil => throw new Error("reduceLeft: empty list")
+    case head :: tl => foldLeft(tl)(head)(op)
+  }
+
+  def foldLeft[U, T](xs: List[T])(acc: U)(op: (U, T) => U): U = xs match {
+    case Nil => acc
+    case head :: tl => foldLeft(tl)(op(acc, head))(op)
+  }
+
+  foldLeft(List(1, 2, 3))(0)((x, y) => x + y)
+  // res0: Int = 6
+
+  foldLeft(List(1, 2, 3))("")((x, y) => x + y.toString)
+  // res1: String = 123
+
+  def mapFun[T, U](xs: List[T], f: T => U): List[U] = (xs foldRight List[U]())(f(_) :: _)
+
+  // can we replace `foldRight` with `foldLeft` here ?
+  def lengthFun[T](xs: List[T]): Int = (xs foldRight 0)((el, acc) => 1 + acc)
 }

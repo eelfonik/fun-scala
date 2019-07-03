@@ -128,10 +128,6 @@ object listMethods {
     // (xs take n) ::: (xs drop n + 1)
   }
 
-  // in scala `reduce` is a special case of `fold`
-  // as reduce requires reduce a list to a single value
-  // whereas fold can take a first param as the initial accumulator
-  // roughly `def reduce(T, T): T = fold(T)(T, T)`, and `fold(A >: B)(A, B): A`
   def flatten(xs: List[Any]): List[Any] = xs.foldLeft(List[Any]())((acc, it) => {
     it match {
       case list: List[Any] => acc ::: flatten(list)

@@ -227,5 +227,5 @@ class C extends A with B {
 ## 总结：
 这一部分非常的object oriented, 特别是从一个abstract class or trait extends出来的各种class, 被称之为**dynamic method dispatch**, 即一个method被call的时候，取决于包含了这个method的object的*runtime type*.
 
-> Q: **Dynamic method dispatch** 跟functional programming里使用的**higher order function**非常相似，所以这两者能否互相代替？以及跟多态polymorphism有啥差别？
+> Q: **Dynamic method dispatch** 跟functional programming里使用的**higher order function** (link [here](design-patterns.md#higher-order-function)) 非常相似，所以这两者能否互相代替？以及跟多态polymorphism有啥差别？
 

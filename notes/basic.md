@@ -128,60 +128,7 @@ list(1)
 res: Int = 2
 ```
 
-#### More on `List`
-
-as it's important building block for many data.
-
-- At basic, `List` **is** a sequence, and it's a recursive tree structure, while `Array` is flat.
-
-- create a list:
-
-  ```scala
-  List(x1, ..., xn)
-  ```
-
-- `List` is *homogeneous*: it can contain only the **same type** of elements (but that *type* can be `Any`, the ultimate top class, so you can still put anything if you want... 😹)
-
-- `List` is constructed by
-  - the empty list `Nil`
-  - and a constructor `cons`, or `::`, so that `x :: xs` means getting a new List with first element (`head`) as `x`, combined with the elements in another List `xs` (`tail`). 
-
-    **N.B.**
-    - think a List with only one element `el` is actually `el :: Nil`
-    - the operators end with `:` are **right associative**, while all other operators are left associative. And those right associative operators are treat as the *method call* of its **right operand** : So `1 :: 2 :: Nil` is the same as `Nil.::2.::1` -> see the `prepend` operation we defined [here](../src/main/scala/week4/NonPrimitive.scala).
-
-- pattern match for `List` decomposition
-
-  ```scala
-  List(x)
-  x :: Nil // a list with the first element as x
-
-  List(x :: xs) // a list A of a list B, where the list B consistents of a first element `x`, and a tail
-  ```
-
-- Some common methods for `List`
-
-  A complete doc is [here](https://www.scala-lang.org/api/2.13.0/scala/collection/immutable/List.html)
-
-  Basic methods:
-
-  - `xs.length`
-  - `xs.last`, `xs.init`: reversed version of `xs.head`, `xs.tail`
-  - `xs take n`, `xs drop n` : get the first `n` elements of a list, or take out the first `n` elements from a list
-  - `xs ++ ys` or `xs concate ys` or `xs ::: ys`
-  - `xs.reverse`
-  - `xs updated (n,x)`: update a list at index `n`
-
-  HOF methods:
-
-  - `xs filter (x => x > 0)`
-  - `xs filterNot (x => x > 0)`
-  - `xs partition (x => x > 0)`
-
-
-  - `xs takewhile (x => x > 0)`
-  - `xs dropwhile (x => x > 0)`
-  - `xs span (x => x > 0)`
+#### More on [List](list.md)
 
 ### **Mutable collection**
 
