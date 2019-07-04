@@ -39,6 +39,8 @@ Three operators:
 1 to 11 by 2 //1,3,5,7,9,11
 
 1 until 11 by 2 //1,3,5,7,9
+
+11 until 1 by -2 //11,9,7,5,3
 ```
 
 ### some more sequence operators
@@ -51,7 +53,7 @@ Three operators:
   ```scala
   val n = 4
   val m = 8
-  (1 to n) flatMap(x => (1 to m) map (y => (x, y)))
+  (1 to n) flatMap (x => (1 to m) map (y => (x, y)))
 
   // res0: IndexedSeq[(Int, Int)] = Vector((1,1), (1,2), (1,3), (1,4), (1,5), (1,6), (1,7), (1,8), (2,1), (2,2), (2,3), (2,4), (2,5), (2,6), (2,7), (2,8), (3,1), (3,2), (3,3), (3,4), (3,5), (3,6), (3,7), (3,8), (4,1), (4,2), (4,3), (4,4), (4,5), (4,6), (4,7), (4,8))
   ```
@@ -67,9 +69,54 @@ Exercise:
 def isPrime(n: Int): Boolean = (2 until n) forall (d => n % d != 0)
 ```
 
+### for expression
+`for (s <- Seq if p(s)) yield f(s)`
+
+is the same as saying: 
+
+`Seq filter p map f`
+
+To generalize the for expression:
+
+```scala
+/*
+We can use `{}` instead of `()` to be able to write multiple generators in multiple lines
+*/
+for {
+  s1 <- Seq1 // generator 1
+  s2 <- Seq2 // generator 2
+  ...
+  sN <- SeqN // generator n
+  if p(s1, ...sN) // filter/predict function (optional)
+} yield f(s1, ...sN) // map function
+```
+
 ## Set
 
+更接近数学上set（集合）的定义
+
+- `Set` is *unordered*
+- `Set` has *no duplicate* elements
+- main operator for `Set` is `contains`
+
+All possible `Set` operators [doc](https://docs.scala-lang.org/overviews/collections/sets.html)
+
 ## Map
+
+`Map[Key, value]`:
+
+- `Map` in scala is both an association data structure, and a function
+
+  ```scala
+  val someMap = Map(1 -> "a", 2 -> "b", 3 -> "c")
+
+  someMap(1) // String = a
+
+  // to avoid NoSuchElementExcpetion error, use `get`
+  someMap get 4 // Option[String] = None
+
+  someMap get 3 // Option[String] = Some(c)
+  ```
 
 
 
