@@ -130,6 +130,8 @@ res: Int = 2
 
 #### More on [List](list.md)
 
+#### More on other immutable [data structures](data.md)
+
 ### **Mutable collection**
 
 例如`ListBuffer`

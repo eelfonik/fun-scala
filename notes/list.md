@@ -2,7 +2,7 @@
 
 ### Basic
 
-At basic, `List` **is** a sequence, and it's a recursive tree structure, while `Array` is flat.
+At basic, `List` **is** a sequence, and it's a *recursive tree structure*, while `Array` is flat.
 
 ### create a list
 

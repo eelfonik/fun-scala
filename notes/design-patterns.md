@@ -137,7 +137,7 @@ someVal match {
 One thing to keep in mind is pattern matching is **sequential** : once it had a fulfilled case, it will not keep looking for all the following cases, so be carefull with the **order** of possible *overlapping* case clauses.
 
 ## Higher order function
-- partical application ??
+- partial application ??
 - closure ??
 
 
