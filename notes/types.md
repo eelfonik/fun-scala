@@ -15,6 +15,11 @@
 ## Type erasure:
 As type doesn't affect program evaluation, it's only useful on compile time, lots of languages including Scala will have **type erasure** for the runtime
 
+## 2 ways for type annotation:
+Kinda related to the terms *call by name* or *call by vaue*.
+
+TBC
+
 
 ## Polymorphism & type:
 

@@ -5,7 +5,32 @@
 - 一些确保data合法的**predefined functions**:
     - `require`,  EX: `require(y != 0, "y cannot be zero!")` -> 如果不满足就会有`IllegalArgumentException`, 这是*precondition*
     - `assert`,  EX: `assert(x > 0)` -> 如果不满足会有`AssertionError`, 这是用来验证或者确保function是正确的（跟test接近了）
-- inside a class definition, `this` refers to the class constructor itself, and you can have multiple constructors for a class besides the **default implicit constructor**
+- `field params`
+
+  ```scala
+  // 普通的定义param的方式
+  class A(count: Int) {
+    val count = count
+  }
+
+  // 或者直接使用`field param`:
+  class B(val count: Int) {}
+
+  // 两者是一样的
+  ```
+- inside a class definition, `this` refers to the class itself, and you can have multiple constructors for a class besides the **default implicit constructor**, thoese are called **overloaded constructor**s.
+
+  ```scala
+  class A(param: List[String]) {
+    // the "*" here means any occurrence of type String (0 to infinite)
+    def this(something: String*) = this(something.toList)
+    override def toString() = "A:" + param
+  }
+
+  // then those 2 can be used interchangable
+  val a1 = new A(List("a", "b"))
+  val a2 = new A("a", "b")
+  ```
 
 ## class & companion object
 

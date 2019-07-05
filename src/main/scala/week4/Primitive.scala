@@ -1,6 +1,9 @@
 package idealized.scala
 
 abstract class TBoolean {
+  // note the `=> T` instead of a direct `T`, is call by name
+  // which means that expression has a result of type `T`
+  // but won't be evaluated until needed
   def ifThenElse[T](thenExpr: => T, elseExpr: => T): T
 
   def && (x: => TBoolean): TBoolean = ifThenElse(x, False)

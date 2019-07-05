@@ -13,7 +13,7 @@ Instead of a recursive tree, `Vector` is a shallow tree, by storing up to 32 ele
 
 - Accessor
 
-  As you can imagine the steps needed to access a elements now is proportional to the **depth of tree**, not to the **length of elements**. In `Vector`, it's $\theta(log_{32}(N)$).
+  As you can imagine the steps needed to access a elements now is proportional to the **depth of tree**, not to the **length of elements**. In `Vector`, it's $\theta(log_{32}(N))$.
 
 - for bulk operation it will be faster than `List`, you can do that in chunks of 32.
 
@@ -105,18 +105,40 @@ All possible `Set` operators [doc](https://docs.scala-lang.org/overviews/collect
 
 `Map[Key, value]`:
 
-- `Map` in scala is both an association data structure, and a function
+- `Map` in scala is both an association *data structure*, and a *function*
 
   ```scala
   val someMap = Map(1 -> "a", 2 -> "b", 3 -> "c")
 
+  // Map as a function (precisely a partial function, which might envoke an error if try to get a non-exist key)
   someMap(1) // String = a
 
   // to avoid NoSuchElementExcpetion error, use `get`
   someMap get 4 // Option[String] = None
 
   someMap get 3 // Option[String] = Some(c)
+
+  // Or turn Map into a total function by giving a default value, then we can avoid the pattern match of `Option` when using the Map
+  val someMap1 = someMap withDefaultValue "unknown"
+  someMap1(6)
+  // String = unknown
+
   ```
+
+- All methods like `map`, `flatMap` can be used on Map, including for expression
+
+- `orderBy` & `groupBy`
+
+  `groupBy` will give a `Map` of collections with the discriminator `f`, Ex:
+
+  ```scala
+  val a = List("apple", "pineapple", "pear", "orange")
+  // group by first char in each string
+  a.groupBy(_.head)
+
+  // scala.collection.immutable.Map[Char,List[String]] = HashMap(a -> List(apple), p -> List(pineapple, pear), o -> List(orange))
+  ```
+
 
 
 

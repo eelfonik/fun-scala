@@ -63,6 +63,48 @@ object nqueens {
 }
 
 // Map
-object maps {
-  
+object polynomial {
+  // represent polynomial as a Map from exponents to coeffients
+  // Ex: x^3 - 2x + 5
+  // Map(0 -> 5, 1 -> -2, 3 -> 1)
+
+  class Polynom(val terms: Map[Int, Double]) {
+    def this(bindings: (Int, Double)*) = this(bindings.toMap)
+
+    // interesting part is not to map on the first term, but rather on `other.terms`
+    // as the concat of Map will use override strategy instead of merge
+    def + (other: Polynom) = new Polynom(terms ++ other.terms.map(term => {
+      val (exp, coef) = term
+      terms get exp match {
+        case Some(thisCoef) => exp -> (coef + thisCoef)
+        case None => exp -> coef
+      }
+    }))
+
+    // or use default value to avoid the pattern match to `Option`
+    val terms0 = terms withDefaultValue 0.0
+    def add (other: Polynom) = new Polynom(terms0 ++ other.terms0.map(term => {
+      val (exp, coef) = term
+      exp -> (coef + terms0(exp))
+    }))
+
+    // or instead of `++`, use `foldLeft`
+    def addWithFoldLeft(other: Polynom) = new Polynom(other.terms0.foldLeft(terms0)((acc, term) => {
+      val (exp, coef) = term
+      acc + (exp -> (coef + terms0(exp)))
+    }))
+
+    override def toString(): String =
+      (for ((exp, coef) <- terms.toList.sorted.reverse) yield coef+"x^"+exp) mkString " + "
+  }
+
+  val p1 = new Polynom(0 -> 5.0, 1 -> -2.0, 3 -> 1.0)
+  //or val p1 = new Polynom(Map(0 -> 5.0, 1 -> -2.0, 3 -> 1.0))
+
+  val p2 = new Polynom(1 -> 2.0, 2 -> 2.4)
+  //or val p2 = new Polynom(Map(1 -> 2.0, 2 -> 2.4))
+
+  p1 + p2
+
+  p1 add p2
 }
