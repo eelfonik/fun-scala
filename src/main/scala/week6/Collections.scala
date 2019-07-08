@@ -107,4 +107,8 @@ object polynomial {
   p1 + p2
 
   p1 add p2
+
+  p1 addWithFoldLeft p2
+
+  // all the above 3 returns the same result
 }

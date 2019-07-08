@@ -67,6 +67,9 @@ for `List` decomposition
     - `foldLeft`
     - `foldRight`
 
+    N.B. The type inference in Scala for fold has some limitations, when passing the first initial accumulator `A`, sometimes you need to specify it's type, that is, instead of `someSeq.foldLeft(anotherSeq)((acc, oneItem) => ...)`, you need to be explicit about the type of `anotherSeq`, see [this](https://stackoverflow.com/q/27652463) question on stackoverflow.
+    
+
     > Q: How about `reduce` & `fold`? The signature seems different than their left or right version ?
 
 ### Prove of list methods
