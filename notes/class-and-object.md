@@ -106,6 +106,8 @@ n match {
 res0: Any = hello 1
 ```
 
+### case class is the preferred way to define complex data structure
+
 ## abstract class
 
 > Q: 跟trait有啥差别？
@@ -145,6 +147,7 @@ Add functionality to a class, it could contain *abstract* (not implemented) or *
 > Q: 这东西跟abstract object有什么区别？？
 
 > A:
+> - 类似interface, 但可以有concrete methods
 > - trait不能有parameters
 > - 可以直接`new`一个`trait`
 > - A trait is a kind of class that enables multiple inheritance. 
