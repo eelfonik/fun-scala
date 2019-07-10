@@ -136,6 +136,44 @@ someVal match {
 
 One thing to keep in mind is pattern matching is **sequential** : once it had a fulfilled case, it will not keep looking for all the following cases, so be carefull with the **order** of possible *overlapping* case clauses.
 
+## Partial function
+
+The definition of `PartialFunction` trait is a subtype of `Function1`, who implements the `isDefinedAt` method
+
+```scala
+trait PartialFunction[-A, +R] extends Function1[-A, +R]{
+  def apply(x: A): R
+  def isDefinedAt(x: A): R
+}
+
+// then with a f like
+val f: PartialFunction[List[Int], String] = {
+  case Nil => "one"
+  case x :: y :: rest => "two"
+}
+
+f.isDefinedAt(List(1,2,3))
+// res1: Boolean = true
+f(List(1,2,3))
+// String = two
+
+// N.B if we have a g function as following
+val g: PartialFunction[List[Int], String] = {
+  case Nil => "one"
+  case x :: rest => rest match {
+    case Nil => "two"
+  }
+}
+
+// `isDefinedAt still return true
+g.isDefinedAt(List(1,2,3))
+// res2: Boolean = true
+
+// but we actually have a match error
+g(List(1,2,3))
+// scala.MatchError ....
+```
+
 ## Higher order function
 - partial application ??
 - closure ??

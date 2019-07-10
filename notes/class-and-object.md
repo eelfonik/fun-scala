@@ -108,6 +108,8 @@ res0: Any = hello 1
 
 ### case class is the preferred way to define complex data structure
 
+For usage of `case class` together with `abstract class` or `trait`, and using the pattern match, see the [ADT](types.md#adt) part.
+
 ## abstract class
 
 > Q: 跟trait有啥差别？
