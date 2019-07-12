@@ -165,11 +165,12 @@ val g: PartialFunction[List[Int], String] = {
   }
 }
 
-// `isDefinedAt still return true
+// `isDefinedAt` still return true
 g.isDefinedAt(List(1,2,3))
 // res2: Boolean = true
 
 // but we actually have a match error
+// as the isDefinedAt only check the outer most level of pattern matching
 g(List(1,2,3))
 // scala.MatchError ....
 ```

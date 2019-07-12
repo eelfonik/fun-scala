@@ -17,7 +17,7 @@ Instead of a recursive tree, `Vector` is a shallow tree, by storing up to 32 ele
 
 - for bulk operation it will be faster than `List`, you can do that in chunks of 32.
 
-- you can apply every possible operators on `Vector` just as on `List`, with exception of `cons`, instead of `::`, it will be `x +: vectorX` for prepend, and `vectorX :+ x` for append. The append `:+` is also with a complexity of $\theta(log_{32}(N)$)
+- you can apply every possible operators on `Vector` just as on `List`, with exception of `cons`, instead of `::`, it will be `x +: vectorX` for prepend, and `vectorX :+ x` for append. The append `:+` is also with a complexity of $\theta(log_{32}(N))$
 
 > Q: for append we could also use `:+` on List? 
 
