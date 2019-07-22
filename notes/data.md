@@ -69,28 +69,6 @@ Exercise:
 def isPrime(n: Int): Boolean = (2 until n) forall (d => n % d != 0)
 ```
 
-### for expression
-`for (s <- Seq if p(s)) yield f(s)`
-
-is the same as saying: 
-
-`Seq filter p map f`
-
-To generalize the for expression:
-
-```scala
-/*
-We can use `{}` instead of `()` to be able to write multiple generators in multiple lines
-*/
-for {
-  s1 <- Seq1 // generator 1
-  s2 <- Seq2 // generator 2
-  ...
-  sN <- SeqN // generator n
-  if p(s1, ...sN) // filter/predict function (optional)
-} yield f(s1, ...sN) // map function
-```
-
 ## Set
 
 更接近数学上set（集合）的定义

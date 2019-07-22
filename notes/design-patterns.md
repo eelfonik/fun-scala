@@ -136,6 +136,64 @@ someVal match {
 
 One thing to keep in mind is pattern matching is **sequential** : once it had a fulfilled case, it will not keep looking for all the following cases, so be carefull with the **order** of possible *overlapping* case clauses.
 
+### for expression
+
+#### General form
+`for (s <- Seq if p(s)) yield f(s)`
+
+is the same as saying: 
+
+`Seq filter p map f`
+
+To generalize the for expression:
+
+```scala
+/*
+We can use `{}` instead of `()` to be able to write multiple generators in multiple lines
+*/
+for {
+  s1 <- Seq1 // generator 1
+  s2 <- Seq2 // generator 2
+  ...
+  sN <- SeqN // generator n
+  if p(s1, ...sN) // filter/predict function (optional)
+} yield f(s1, ...sN) // map function
+
+// you can see the things like this
+for (s1 <- Seq1.withFilter(s1 => p)) yield s1
+```
+
+#### Combine with pattern matching
+Actually the for expression can be combined with pattern matching to be more powerful, that is, **the left-hand of a generator can also be a pattern** :
+
+```scala
+// note case class is just another way of defining pattern match
+abstract class Item
+case class MapItem(bindings: Map[Int, String]) extends Item
+case class StringItem(value: String) extends Item
+
+val seq1: List[Item] = List(
+  MapItem(Map(1 -> "a", 2 -> "b", 3 -> "c")),
+  MapItem(Map(1 -> "a", 2 -> "b1", 3 -> "c1")),
+  MapItem(Map(1 -> "a2", 2 -> "b2", 3 -> "c2")),
+  StringItem("someString")
+) // a list of Item type
+
+for {
+  MapItem(s1) <- seq1 // this line is pattern matching for all MapItem
+  if s1(1) == "a"
+} yield s1(2)
+
+// and the map & filter version is not so concise as before
+seq1.map(s => s match {
+  case MapItem(s) => {
+    if (s(1) == "a") s(2)
+    else "" // and you need to take care yourself here to return the same type for empty values to be able to filter
+  }
+  case _ => ""
+}).filter(s => !s.isEmpty)
+```
+
 ## Partial function
 
 The definition of `PartialFunction` trait is a subtype of `Function1`, who implements the `isDefinedAt` method
